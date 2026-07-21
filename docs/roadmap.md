@@ -1,4 +1,4 @@
-# **🗺️ Roadmap de Engenharia: GitAgent.AI (Atualização Técnica 2026/2027)**
+﻿# **🗺️ Roadmap de Engenharia: GitAgent.AI (Atualização Técnica 2026/2027)**
 
 Este roadmap foi desenhado para fechar de forma prática e cirúrgica as lacunas do mercado sênior atual. Cada fase foca em transformar a sua capacidade de "fazer dar certo" em **padrões de engenharia documentados e prontos para produção**.
 
@@ -95,6 +95,8 @@ O **GitAgent.AI** lerá repositórios públicos do GitHub, usará um agente de I
 * \[ \] Realizar o deploy do front-end na **Vercel** apontando para o seu repositório.  
 * \[ \] Realizar o deploy do backend NestJS no **Render** (lembrando de configurar as variáveis de ambiente com as chaves do Gemini e credenciais do Redis Cloud).  
 * \[ \] Testar o fluxo de ponta a ponta em produção pública.
+
+* [ ] **GitFlow Simplificado:** Configurar o repositório com proteção de branch. A branch main será conectada ao gatilho de deploy automático em produção (Vercel/Render). A branch develop servirá para testes de integração contínua. Todo novo código deve ser desenvolvido em sub-branches (ex: eature/ai-agent) e mesclado na develop via Pull Request.
 
 ## **📣 Fase 6: O Marketing de Sênior \- LinkedIn & GitHub (Semana 6\)**
 

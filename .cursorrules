@@ -31,3 +31,7 @@
 
 # 8) Observabilidade de mudanças
 # - Se IA alterar arquitetura (mover, renomear arquivos críticos), gerar um resumo e abrir PR com descrição clara e link para ADRs usados.
+## **5. Fluxo de Versionamento (GitFlow Simplificado)**
+- **Branches Oficiais:** O projeto utiliza estritamente as branches `main` (Produção/Estável) e `develop` (Integração contínua).
+- **Geração de Comandos:** Se você for sugerir comandos de `git commit` ou criação de branches, garanta que o ponto de partida seja sempre a branch `develop`.
+- **Proteção:** Nunca sugira modificações diretas ou merges não revisados na branch `main`. A `main` só recebe código via Pull Request vindo da `develop`.
