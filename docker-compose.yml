@@ -1,0 +1,33 @@
+﻿version: '3.8'
+
+services:
+  gitagent-redis:
+    image: redis:7-alpine
+    container_name: gitagent-redis-broker
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server 
+      --appendonly yes 
+      --appendfsync everysec 
+      --maxmemory 512mb 
+      --maxmemory-policy noeviction 
+      --tcp-keepalive 300
+    volumes:
+      - redis_broker_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - gitagent-network
+
+volumes:
+  redis_broker_data:
+    driver: local
+
+networks:
+  gitagent-network:
+    driver: bridge

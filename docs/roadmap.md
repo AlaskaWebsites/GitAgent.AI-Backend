@@ -115,3 +115,14 @@ O **GitAgent.AI** lerá repositórios públicos do GitHub, usará um agente de I
   * Instruções de como rodar localmente com docker-compose.  
 * \[ \] Gravar um vídeo curto de 1 minuto da tela mostrando o sistema funcionando em tempo real.  
 * \[ \] Publicar no LinkedIn um artigo explicativo e focado em engenharia, destacando a migração conceitual do MQTT (seu conhecimento raiz) para o Redis/BullMQ (sua nova skill de escala).
+
+## Como inicializar o NestJS localmente (instrução)
+
+Para gerar o scaffold do NestJS no diretório atual, rode:
+
+```bash
+npx @nestjs/cli new . --package-manager npm --skip-install
+```
+
+Isto criará o package.json e a estrutura de src; em seguida rode `npm install`.
+
