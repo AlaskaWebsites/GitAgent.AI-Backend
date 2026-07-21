@@ -1,0 +1,33 @@
+﻿# .cursorrules - Regras mestre do projeto para IAs assistivas
+# Objetivo: garantir que agentes (Cursor, Windsurf, Copilot, Gemini) sigam
+# as diretrizes arquiteturais e de implementação do projeto antes de gerar código.
+
+# 1) Contexto de leitura
+# Sempre leia: /docs/adrs/* e /docs/roadmap.md antes de propor ou gerar mudanças de arquitetura.
+# Se um ADR existir para o domínio em questão, aplique-o estritamente.
+
+# 2) Regras de implementação (exemplos obrigatórios)
+# - Camadas de negócio (use-cases, domain) NÃO devem depender de frameworks.
+# - Proibir o uso de decoradores/framework-specific (ex: @Injectable, @Controller) dentro das entidades e casos de uso.
+# - Validação de entrada deve usar Zod (ou adaptadores aprovados); não misturar com pipes globais do framework sem autorização do ADR.
+
+# 3) Nomeação e localização de artefatos
+# - Coloque ADRs em /docs/adrs (numerados: 001-*.md, 002-*.md)
+# - Roadmap principal em /docs/roadmap.md
+# - Prompts e regras em /docs/prompts/*.md
+
+# 4) Testes e qualidade
+# - Sempre gerar testes unitários para novos serviços/casos de uso.
+# - Ao gerar código, inclua exemplos mínimos de teste e instruções para executar.
+
+# 5) Auditoria e revisão
+# - Ao revisar código, comparar com ADRs aplicáveis e checar vazamento de regras de negócio para camadas de infra.
+
+# 6) Prompting mínimo (para uso por desenvolvedores)
+# - Incluir cabeçalho: qual ADR aplicar (ex: ADR 001), área afetada e objetivo esperado.
+
+# 7) Segurança e dados sensíveis
+# - Nunca incluir chaves, segredos ou dados sensíveis nos commits ou prompts; devolver erro ao detectar esses padrões.
+
+# 8) Observabilidade de mudanças
+# - Se IA alterar arquitetura (mover, renomear arquivos críticos), gerar um resumo e abrir PR com descrição clara e link para ADRs usados.
