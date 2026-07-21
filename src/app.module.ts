@@ -1,7 +1,5 @@
 ﻿import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { validateEnv } from './infrastructure/framework/config/env.validation';
 
 @Module({
@@ -9,10 +7,9 @@ import { validateEnv } from './infrastructure/framework/config/env.validation';
     ConfigModule.forRoot({
       isGlobal: true,
       validate: validateEnv,
-      envFilePath: '.env',
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}

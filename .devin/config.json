@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Exec(node)",
+      "Exec(rm)",
+      "Exec(del)",
+      "Exec(cmd)",
+      "Exec(powershell)"
+    ]
+  }
+}
