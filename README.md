@@ -58,7 +58,7 @@ $ npm run test
 $ npm run test:cov
 ```
 
-E2E tests (Jest, kept for compatibility):
+E2E tests (Vitest — migrated):
 
 ```bash
 # e2e tests

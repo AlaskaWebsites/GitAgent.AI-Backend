@@ -18,7 +18,7 @@ Sua missão é gerar código estrito, seguro e modular. Você DEVE seguir as reg
 ## **3\. Qualidade e Tecnologias Estritas**
 
 * **Validação:** Use EXCLUSIVAMENTE zod para validação de dados e variáveis de ambiente. Proibido sugerir class-validator ou Joi.  
-* **Testes:** Todo código gerado para src/core/use-cases/ deve ser acompanhado de uma sugestão de teste unitário usando Vitest. E2E tests podem permanecer com Jest até migração completa.  
+* **Testes:** Todo código gerado para src/core/use-cases/ deve ser acompanhado de uma sugestão de teste unitário usando Vitest. E2E tests foram migrados para Vitest — use Vitest para execução e coverage em todos os testes.  
 * **Mensageria:** Ao lidar com filas, use a configuração para BullMQ conectada ao Redis.  
 * **Tipagem:** TypeScript em Strict Mode absoluto. Nunca use any. Use unknown se necessário e valide via Zod.
 
