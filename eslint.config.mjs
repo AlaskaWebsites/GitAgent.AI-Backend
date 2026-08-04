@@ -15,7 +15,16 @@ export default tseslint.config(
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest,
+        // Vitest globals
+        describe: true,
+        it: true,
+        test: true,
+        expect: true,
+        beforeEach: true,
+        afterEach: true,
+        beforeAll: true,
+        afterAll: true,
+        vi: true,
       },
       sourceType: 'commonjs',
       parserOptions: {
