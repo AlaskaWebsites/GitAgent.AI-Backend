@@ -14,8 +14,7 @@ describe('App (e2e)', () => {
     process.env.REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379';
 
     // Import AppModule after env is configured so ConfigModule.forRoot validate() sees REDIS_URL
-    const module = await import('../src/app.module');
-    const { AppModule } = module as { AppModule: typeof AppModuleType };
+    const { AppModule } = (await import('../src/app.module')) as { AppModule: typeof AppModuleType };
 
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = moduleRef.createNestApplication();
@@ -27,7 +26,8 @@ describe('App (e2e)', () => {
   });
 
   it('/ (GET) should return 200 and status ok', () => {
-    return request(app.getHttpServer())
+    const server = app.getHttpServer() as unknown as import('http').Server;
+    return request(server)
       .get('/')
       .expect(200)
       .expect((res: Response) => {
