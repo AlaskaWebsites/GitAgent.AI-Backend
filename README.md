@@ -25,6 +25,8 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+Nota: este projeto segue Clean Architecture — o código específico do framework NestJS foi isolado em src/infrastructure/framework/nestjs/ para preservar o core (src/core/) e permitir a integração futura de outros frameworks ou adaptadores legados (padrão Strangler Fig).
+
 ## Project setup
 
 ```bash
