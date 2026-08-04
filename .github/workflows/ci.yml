@@ -15,6 +15,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check forbidden tool dotfiles
+        run: |
+          echo "Checking for forbidden tool dotfiles in the change set..."
+          git fetch origin develop --depth=1 || true
+          CHANGED=$(git diff --name-only origin/develop...HEAD || git diff --name-only HEAD^..HEAD || true)
+          if [ -z "$CHANGED" ]; then
+            echo "No changed files detected."
+            exit 0
+          fi
+          echo "$CHANGED" | grep -E '(^|/)\.(cursor|devin|windsurf|cline)(/|$)' && {
+            echo "\nERROR: Forbidden tool-specific dotfiles detected in this change set:";
+            echo "$CHANGED" | grep -E '(^|/)\.(cursor|devin|windsurf|cline)(/|$)';
+            echo "These files are machine-local tool configs and must not be committed. Remove them from the commit or add them to .gitignore.";
+            exit 1
+          } || echo "No forbidden dotfiles found."
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
