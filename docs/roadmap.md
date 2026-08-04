@@ -24,8 +24,8 @@ O **GitAgent.AI** lerá repositórios públicos do GitHub, usará um agente de I
   ├── use-cases/      \# Lógica de aplicação (Application Business Rules)  
   └── infrastructure/ \# Express/Fastify, NestJS, Redis, Database, LLM API
 
-* \[ \] Escrever o arquivo docker-compose.yml para subir um serviço local do Redis na porta 6379\.  
-* \[ \] Implementar a validação estrita de variáveis de ambiente usando joi ou zod no NestJS.
+* [ ] Escrever o arquivo docker-compose.yml para subir um serviço local do Redis na porta 6379.  
+* [ ] Implementar a validação estrita de variáveis de ambiente usando Zod no NestJS.
 
 ## **🧠 Fase 2: O Cérebro \- Integração de IA & Fluxo de Agente (Semana 2\)**
 

@@ -48,15 +48,21 @@ $ npm run start:prod
 
 ## Run tests
 
+Unit tests (Vitest):
+
 ```bash
 # unit tests
 $ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
 # test coverage
 $ npm run test:cov
+```
+
+E2E tests (Jest, kept for compatibility):
+
+```bash
+# e2e tests
+$ npm run test:e2e
 ```
 
 ## Deployment
