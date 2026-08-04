@@ -5,7 +5,6 @@ import type { Response } from 'supertest';
 import type { AppModule as AppModuleType } from '../src/app.module';
 // AppModule is imported dynamically after env is set to allow ConfigModule validation to succeed
 
-
 describe('App (e2e)', () => {
   let app: INestApplication;
 
@@ -14,9 +13,13 @@ describe('App (e2e)', () => {
     process.env.REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379';
 
     // Import AppModule after env is configured so ConfigModule.forRoot validate() sees REDIS_URL
-    const { AppModule } = (await import('../src/app.module')) as { AppModule: typeof AppModuleType };
+    const { AppModule } = (await import('../src/app.module')) as {
+      AppModule: typeof AppModuleType;
+    };
 
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
+    const moduleRef = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
     app = moduleRef.createNestApplication();
     await app.init();
   });
@@ -31,9 +34,10 @@ describe('App (e2e)', () => {
       .get('/')
       .expect(200)
       .expect((res: Response) => {
-        const body = res.body as Record<string, unknown>;
-        expect(body).toHaveProperty('status', 'ok');
-        expect(body).toHaveProperty('message');
+        type Body = { status: string; message?: string; timestamp?: string };
+        const body = res.body as Body;
+        expect(body.status).toBe('ok');
+        expect(typeof body.message).toBe('string');
       });
   });
 });
