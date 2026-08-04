@@ -1,6 +1,8 @@
 import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
+import type { Response } from 'supertest';
+import type { AppModule as AppModuleType } from '../src/app.module';
 // AppModule is imported dynamically after env is set to allow ConfigModule validation to succeed
 
 
@@ -13,7 +15,7 @@ describe('App (e2e)', () => {
 
     // Import AppModule after env is configured so ConfigModule.forRoot validate() sees REDIS_URL
     const module = await import('../src/app.module');
-    const { AppModule } = module;
+    const { AppModule } = module as { AppModule: typeof AppModuleType };
 
     const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
     app = moduleRef.createNestApplication();
@@ -28,7 +30,7 @@ describe('App (e2e)', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect((res: any) => {
+      .expect((res: Response) => {
         const body = res.body as Record<string, unknown>;
         expect(body).toHaveProperty('status', 'ok');
         expect(body).toHaveProperty('message');
