@@ -1,25 +1,36 @@
-import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { App } from 'supertest/types';
-import { AppModule } from './../src/app.module';
+import { Test } from '@nestjs/testing';
+const request = require('supertest');
+// AppModule is imported dynamically after env is set to allow ConfigModule validation to succeed
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication<App>;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+describe('App (e2e)', () => {
+  let app: INestApplication;
 
-    app = moduleFixture.createNestApplication();
+  beforeAll(async () => {
+    // Ensure required env vars for config validation during tests
+    process.env.REDIS_URL = process.env.REDIS_URL ?? 'redis://localhost:6379';
+
+    // Import AppModule after env is configured so ConfigModule.forRoot validate() sees REDIS_URL
+    const module = require('../src/app.module');
+    const { AppModule } = module;
+
+    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
+    app = moduleRef.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  afterAll(async () => {
+    await app.close();
+  });
+
+  it('/ (GET) should return 200 and status ok', () => {
     return request(app.getHttpServer())
       .get('/')
       .expect(200)
-      .expect('Hello World!');
+      .expect((res) => {
+        expect(res.body).toHaveProperty('status', 'ok');
+        expect(res.body).toHaveProperty('message');
+      });
   });
 });
