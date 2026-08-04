@@ -18,7 +18,9 @@ Sua missão é gerar código estrito, seguro e modular. Você DEVE seguir as reg
 ## **3\. Qualidade e Tecnologias Estritas**
 
 * **Validação:** Use EXCLUSIVAMENTE zod para validação de dados e variáveis de ambiente. Proibido sugerir class-validator ou Joi.  
-* **Testes:** Todo código gerado para src/core/use-cases/ deve ser acompanhado de uma sugestão de teste unitário usando Vitest. E2E tests foram migrados para Vitest — use Vitest para execução e coverage em todos os testes.  
+* **Testes:** Todo código gerado para src/core/use-cases/ deve ser acompanhado de uma sugestão de teste unitário usando Vitest. E2E tests foram migrados para Vitest — use Vitest para execução e coverage em todos os testes.
+
+* **Dotfiles de ferramentas:** Arquivos/pastas específicos de ferramentas locais (ex.: .cursor/, .devin/, .windsurf/) não devem ser comitados. O repositório possui um pre-commit hook local e uma verificação na CI que bloqueiam commits/PRs contendo essas pastas; mantenha apenas o arquivo de contrato `.cursorrules` no repo.  
 * **Mensageria:** Ao lidar com filas, use a configuração para BullMQ conectada ao Redis.  
 * **Tipagem:** TypeScript em Strict Mode absoluto. Nunca use any. Use unknown se necessário e valide via Zod.
 
