@@ -62,6 +62,8 @@ src/
 
 Nota: o diretório `framework/nestjs/` foi introduzido para isolar o acoplamento ao NestJS. Isso permite plugar outros frameworks ou adaptadores legados dentro de `infrastructure/` sem contaminar o core (src/core/), facilitando estratégias futuras como o padrão Strangler Fig.
 
+Além disso, as regras mestras para agentes automatizados (ex.: Cursor/Copilot) foram centralizadas em `.cursorrules` na raiz do repositório; esse arquivo define diretrizes obrigatórias (leitura de ADRs, testes com Vitest, isolamento de framework, etc.) que agentes devem seguir antes de propor ou gerar mudanças de arquitetura.
+
 **Implementação do Custom Provider (Isolamento do Framework):**
 
 Utiliza-se Symbol para criar *tokens* de injeção, permitindo que o NestJS instancie a classe pura passando os repositórios concretos.

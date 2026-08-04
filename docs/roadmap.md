@@ -27,6 +27,8 @@ O **GitAgent.AI** lerá repositórios públicos do GitHub, usará um agente de I
 * [ ] Escrever o arquivo docker-compose.yml para subir um serviço local do Redis na porta 6379.  
 * [ ] Implementar a validação estrita de variáveis de ambiente usando Zod no NestJS.
 
+Nota: as regras mestras para agentes automatizados estão centralizadas no arquivo `.cursorrules` na raiz do repositório. Antes de gerar alterações arquiteturais, agentes e assistentes automatizados devem ler os ADRs em /docs/adrs/ e respeitar o .cursorrules (ex.: Vitest obrigatório, isolamento do framework, procedimentos de versionamento).
+
 ## **🧠 Fase 2: O Cérebro \- Integração de IA & Fluxo de Agente (Semana 2\)**
 
 *Aqui você entra de cabeça na Engenharia de IA de 2026\. Em vez de uma chamada de API simples, você criará um agente determinístico com etapas de pensamento (Chain of Thought).*
