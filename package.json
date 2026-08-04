@@ -17,7 +17,7 @@
     "test:watch": "vitest --watch",
     "test:cov": "vitest run --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register ./node_modules/vitest/vitest.js --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "vitest run test/app.e2e-spec.ts"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
