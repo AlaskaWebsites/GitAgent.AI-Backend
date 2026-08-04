@@ -53,17 +53,20 @@ src/
 │   ├── adapters/                \# Implementações concretas das Portas  
 │   │   ├── persistence/  
 │   │   └── messaging/           \# BullMQ Adapter  
-│   └── framework/               \# Acoplamento exclusivo NestJS 11  
-│       ├── config/              \# Validação Zod  
-│       ├── http/                \# Controllers/DTOs  
-│       └── modules/             \# Configuração de Custom Providers  
+│   └── framework/               \# Camada de integração de frameworks  
+│       └── nestjs/              \# Acoplamento exclusivo NestJS 11  
+│           ├── config/          \# Validação Zod  
+│           ├── http/            \# Controllers/DTOs  
+│           └── modules/         \# Configuração de Custom Providers
 └── main.ts
+
+Nota: o diretório `framework/nestjs/` foi introduzido para isolar o acoplamento ao NestJS. Isso permite plugar outros frameworks ou adaptadores legados dentro de `infrastructure/` sem contaminar o core (src/core/), facilitando estratégias futuras como o padrão Strangler Fig.
 
 **Implementação do Custom Provider (Isolamento do Framework):**
 
 Utiliza-se Symbol para criar *tokens* de injeção, permitindo que o NestJS instancie a classe pura passando os repositórios concretos.
 
-// infrastructure/framework/modules/agent.module.ts  
+// infrastructure/framework/nestjs/modules/agent.module.ts  
 export const AGENT\_REPOSITORY\_TOKEN \= Symbol('AGENT\_REPOSITORY\_TOKEN');
 
 @Module({  
@@ -84,7 +87,7 @@ export class AgentModule {}
 
 Implementação do padrão Fail-Fast no app.module.ts, interceptando o arranque se as credenciais críticas faltarem.
 
-// infrastructure/framework/config/env.validation.ts  
+// infrastructure/framework/nestjs/config/env.validation.ts  
 export const envSchema \= z.object({  
   NODE\_ENV: z.enum(\['development', 'production'\]).default('development'),  
   PORT: z.string().default('3000').transform(Number),  

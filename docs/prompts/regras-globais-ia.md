@@ -13,7 +13,7 @@ Sua missão é gerar código estrito, seguro e modular. Você DEVE seguir as reg
 
 * **Proibido MVC:** Nunca gere Controllers que acessem Bancos de Dados ou ORMs diretamente.  
 * **Pureza do Domínio:** A pasta src/core/ (Domain e Application) é sagrada. É estritamente PROIBIDO importar @nestjs/common, @nestjs/core, bibliotecas de banco de dados, ou usar o decorador @Injectable() dentro de src/core/.  
-* **Injeção de Dependência:** Use interfaces (Ports) para comunicação de saída (Out Ports). Injete implementações reais através da pasta src/infrastructure/framework/modules/ usando Symbol e useFactory.
+* **Injeção de Dependência:** Use interfaces (Ports) para comunicação de saída (Out Ports). Injete implementações reais através da pasta src/infrastructure/framework/nestjs/modules/ usando Symbol e useFactory.
 
 ## **3\. Qualidade e Tecnologias Estritas**
 

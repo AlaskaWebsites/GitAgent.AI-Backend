@@ -58,7 +58,42 @@ Com base nas análises supracitadas, as resoluções técnicas a adotar na Fase 
 
 Para garantir que o núcleo de regras de negócio (Domínio e Casos de Uso) seja ignorante da existência do NestJS 11, a arquitetura baseia-se na inversão de controlo manual dentro dos módulos do *framework*1. As camadas internas definem interfaces (Portas), e as camadas externas (NestJS) fornecem as implementações concretas (Adaptadores)1.  
 A estrutura canónica de diretórios adotada reflete este rigor, segregando a aplicação em core (agnóstico) e infrastructure (acoplado a tecnologias):  
-src/ ├── core/ \# Camada Absolutamente Pura e Independente (POTO) │ ├── domain/ \# Regras de Negócio Corporativas (Enterprise Rules) │ │ ├── entities/ \# Modelos de Domínio sem decoradores do NestJS ou ORMs │ │ │ └── ai-agent.entity.ts │ │ ├── value-objects/ \# Objetos imutáveis descritivos │ │ │ └── agent-id.vo.ts │ │ └── events/ \# Eventos de domínio (ex: AgentOrchestratedEvent) │ └── application/ \# Regras de Negócio da Aplicação (Use Cases) │ ├── use-cases/ \# Atores principais da orquestração de ações │ │ └── orchestrate-agent.usecase.ts │ └── ports/ \# Interfaces para Inversão de Dependência (Contratos) │ ├── in/ \# Portas de Entrada (Interfaces para Use Cases) │ │ └── orchestrate-agent.in-port.ts │ └── out/ \# Portas de Saída (Implementadas pela Infraestrutura) │ ├── agent-repository.out-port.ts │ └── message-broker.out-port.ts │ ├── infrastructure/ \# Onde o NestJS, Banco de Dados e Redis residem │ ├── adapters/ \# Implementações concretas das Portas de Saída │ │ ├── persistence/ \# Adaptação para Banco de Dados Relacional/NoSQL │ │ │ └── postgres-agent.repository.ts │ │ └── messaging/ \# Adaptação para filas assíncronas (Redis/BullMQ) │ │ └── bullmq-broker.adapter.ts │ ├── framework/ \# Acoplamento exclusivo ao ecossistema NestJS 11 │ │ ├── config/ \# Validadores de Ambiente (Zod) │ │ │ └── env.validation.ts │ │ ├── http/ \# Adaptadores de Entrada HTTP (Controladores NestJS) │ │ │ ├── controllers/  
+src/  
+├── core/                        \# Camada Absolutamente Pura e Independente (POTO)  
+│   ├── domain/                  \# Regras de Negócio Corporativas (Enterprise Rules)  
+│   │   ├── entities/            \# Modelos de Domínio sem decoradores do NestJS ou ORMs  
+│   │   │   └── ai-agent.entity.ts  
+│   │   ├── value-objects/       \# Objetos imutáveis descritivos  
+│   │   │   └── agent-id.vo.ts  
+│   │   └── events/              \# Eventos de domínio (ex: AgentOrchestratedEvent)  
+│   └── application/             \# Regras de Negócio da Aplicação (Use Cases)  
+│       ├── use-cases/           \# Atores principais da orquestração de ações  
+│       │   └── orchestrate-agent.usecase.ts  
+│       └── ports/               \# Interfaces para Inversão de Dependência (Contratos)  
+│           ├── in/              \# Portas de Entrada (Interfaces para Use Cases)  
+│           │   └── orchestrate-agent.in-port.ts  
+│           └── out/             \# Portas de Saída (Implementadas pela Infraestrutura)  
+│               ├── agent-repository.out-port.ts  
+│               └── message-broker.out-port.ts  
+├── infrastructure/              \# Onde o NestJS, Banco de Dados e Redis residem  
+│   ├── adapters/                \# Implementações concretas das Portas de Saída  
+│   │   ├── persistence/         \# Adaptação para Banco de Dados Relacional/NoSQL  
+│   │   │   └── postgres-agent.repository.ts  
+│   │   └── messaging/           \# Adaptação para filas assíncronas (Redis/BullMQ)  
+│   │       └── bullmq-broker.adapter.ts  
+│   ├── framework/               \# Camada de integração de frameworks  
+│   │   └── nestjs/              \# Acoplamento exclusivo ao ecossistema NestJS 11  
+│   │       ├── config/          \# Validadores de Ambiente (Zod)  
+│   │       │   └── env.validation.ts  
+│   │       ├── http/            \# Adaptadores de Entrada HTTP (Controladores NestJS)  
+│   │       │   ├── controllers/  
+│   │       │   │   └── agent.controller.ts  
+│   │       │   └── dto/          \# Objetos de Transferência de Dados HTTP  
+│   │       │       └── orchestrate-agent.dto.ts  
+│   │       └── modules/         \# Agrupadores de Injeção de Dependência  
+│   │           ├── app.module.ts  
+│   │           └── agent.module.ts  
+└── main.ts                       \# Arquivo principal de Bootstrap do NestJS  
 │ │ │ │ └── agent.controller.ts │ │ │ └── dto/ \# Objetos de Transferência de Dados HTTP │ │ │ └── orchestrate-agent.dto.ts │ │ └── modules/ \# Agrupadores de Injeção de Dependência │ │ ├── app.module.ts │ │ └── agent.module.ts │ └── main.ts \# Arquivo principal de Bootstrap do NestJS
 
 #### **Fundamentação e Implementação dos Provedores Customizados (Custom Providers)**
@@ -96,7 +131,7 @@ export class OrchestrateAgentUseCase {
 Para fazer a ligação entre a interface abstrata e a infraestrutura concreta dentro do módulo NestJS, utilizam-se Símbolos TypeScript (Symbol) como *Tokens* de Injeção e o padrão de fábrica (useFactory)1. Isto garante que o contentor de Inversão de Controlo (IoC) do NestJS consiga instanciar a classe agnóstica sem violar as suas fronteiras14.
 
 TypeScript  
-// src/infrastructure/framework/modules/agent.module.ts  
+// src/infrastructure/framework/nestjs/modules/agent.module.ts  
 import { Module } from '@nestjs/common';  
 import { AgentController } from '../http/controllers/agent.controller';  
 import { PostgresAgentRepository } from '../../adapters/persistence/postgres-agent.repository';  
@@ -145,7 +180,7 @@ O ficheiro de validação encarrega-se de delinear o esquema, transformar tipos 
 **Definição do Esquema e da Função de Validação:**
 
 TypeScript  
-// src/infrastructure/framework/config/env.validation.ts  
+// src/infrastructure/framework/nestjs/config/env.validation.ts  
 import { z } from 'zod';
 
 // 1\. Definição restritiva e coerciva do escopo de fronteira para as variáveis de ambiente  
@@ -184,7 +219,7 @@ export function validateEnv(config: Record\<string, unknown\>): EnvConfig {
 O AppModule incorpora a validação, bloqueando o *bootstrap* subsequente caso o dicionário devolvido pela função contenha divergências face ao esquema estabelecido7.
 
 TypeScript  
-// src/infrastructure/framework/modules/app.module.ts  
+// src/infrastructure/framework/nestjs/modules/app.module.ts  
 import { Module } from '@nestjs/common';  
 import { ConfigModule } from '@nestjs/config';  
 import { validateEnv } from '../config/env.validation';  
