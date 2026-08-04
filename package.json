@@ -17,8 +17,10 @@
     "test:watch": "vitest --watch",
     "test:cov": "vitest run --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register ./node_modules/vitest/vitest.js --runInBand",
-    "test:e2e": "vitest run test/app.e2e-spec.ts"
+    "test:e2e": "vitest run test/app.e2e-spec.ts",
+    "check:dotfiles": "node scripts/check-dotfiles.js"
   },
+  "prepare": "husky install", 
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
@@ -51,6 +53,7 @@
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0",
+    "husky": "^8.0.0",
     "vitest": "^4.1.10"
   }
 }
