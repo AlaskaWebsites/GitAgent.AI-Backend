@@ -2,36 +2,43 @@
 # Objetivo: garantir que agentes (Cursor, Windsurf, Copilot, Gemini) sigam
 # as diretrizes arquiteturais e de implementação do projeto antes de gerar código.
 
-# 1) Contexto de leitura
+# 1) Contexto de leitura Absoluto
 # Sempre leia: /docs/adrs/* e /docs/roadmap.md antes de propor ou gerar mudanças de arquitetura.
-# Se um ADR existir para o domínio em questão, aplique-o estritamente.
+# Se um ADR existir para o domínio em questão, aplique-o ESTRITAMENTE.
 
-# 2) Regras de implementação (exemplos obrigatórios)
-# - Camadas de negócio (use-cases, domain) NÃO devem depender de frameworks.
-# - Proibir o uso de decoradores/framework-specific (ex: @Injectable, @Controller) dentro das entidades e casos de uso.
-# - Validação de entrada deve usar Zod (ou adaptadores aprovados); não misturar com pipes globais do framework sem autorização do ADR.
+# 2) Regras de implementação (Clean Architecture Estrita)
+# - PUREZA DO DOMÍNIO: Camadas de negócio (src/core/use-cases, src/core/domain) NÃO devem depender de frameworks.
+# - PROIBIDO o uso de decoradores/framework-specific (ex: @Injectable, @Controller) dentro das entidades e casos de uso.
+# - ISOLAMENTO DO FRAMEWORK: Todo código específico do NestJS (Controllers, Modules, Configs) DEVE ser colocado estritamente em `src/infrastructure/framework/nestjs/`.
+# - INJEÇÃO DE DEPENDÊNCIA: Para instanciar Casos de Uso puros no NestJS, use Símbolos (`Symbol`) e `useFactory` nos módulos.
+# - Validação de entrada e variáveis de ambiente deve usar EXCLUSIVAMENTE Zod (Padrão Fail-Fast no bootstrap).
 
 # 3) Nomeação e localização de artefatos
 # - Coloque ADRs em /docs/adrs (numerados: 001-*.md, 002-*.md)
 # - Roadmap principal em /docs/roadmap.md
 # - Prompts e regras em /docs/prompts/*.md
 
-# 4) Testes e qualidade
-# - Sempre gerar testes unitários para novos serviços/casos de uso.
-# - Ao gerar código, inclua exemplos mínimos de teste e instruções para executar.
+# 4) Testes e qualidade (VITEST OBRIGATÓRIO)
+# - É EXPRESSAMENTE PROIBIDO O USO DE JEST. Todo o ecossistema (Unitário e E2E) foi migrado para VITEST.
+# - Sempre gerar testes unitários para novos serviços/casos de uso utilizando a sintaxe do Vitest.
+# - Ao gerar código, inclua exemplos mínimos de teste e instruções para executar via Vitest.
 
-# 5) Auditoria e revisão
+# 5) Mensageria e Assincronismo
+# - Ao lidar com filas e eventos assíncronos, assuma sempre o uso de Redis otimizado (AOF, noeviction) orquestrado pelo BullMQ.
+
+# 6) Auditoria e revisão
 # - Ao revisar código, comparar com ADRs aplicáveis e checar vazamento de regras de negócio para camadas de infra.
 
-# 6) Prompting mínimo (para uso por desenvolvedores)
+# 7) Prompting mínimo (para uso por desenvolvedores)
 # - Incluir cabeçalho: qual ADR aplicar (ex: ADR 001), área afetada e objetivo esperado.
 
-# 7) Segurança e dados sensíveis
+# 8) Segurança e dados sensíveis
 # - Nunca incluir chaves, segredos ou dados sensíveis nos commits ou prompts; devolver erro ao detectar esses padrões.
 
-# 8) Observabilidade de mudanças
+# 9) Observabilidade de mudanças
 # - Se IA alterar arquitetura (mover, renomear arquivos críticos), gerar um resumo e abrir PR com descrição clara e link para ADRs usados.
-## **5. Fluxo de Versionamento (GitFlow Simplificado)**
-- **Branches Oficiais:** O projeto utiliza estritamente as branches `main` (Produção/Estável) e `develop` (Integração contínua).
-- **Geração de Comandos:** Se você for sugerir comandos de `git commit` ou criação de branches, garanta que o ponto de partida seja sempre a branch `develop`.
-- **Proteção:** Nunca sugira modificações diretas ou merges não revisados na branch `main`. A `main` só recebe código via Pull Request vindo da `develop`.
+
+# 10) Fluxo de Versionamento (GitFlow Simplificado)
+# - Branches Oficiais: O projeto utiliza estritamente as branches `main` (Produção/Estável) e `develop` (Integração contínua).
+# - Geração de Comandos: Se você for sugerir comandos de `git commit` ou criação de branches, garanta que o ponto de partida seja sempre a branch `develop`.
+# - Proteção: NUNCA sugira modificações diretas ou merges não revisados na branch `main`. A `main` só recebe código via Pull Request vindo da `develop`.
